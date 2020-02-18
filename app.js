@@ -4,6 +4,7 @@ let user = require('./controllers/usercontroller');
 let item = require('./controllers/itemcontroller');
 let sequelize = require('./db');
 
+// console.log('hello!')
 
 sequelize.sync();
 // sequelize.sync({force: true});
