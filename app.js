@@ -1,10 +1,12 @@
 let express = require('express');
 let app = express();
 let user = require('./controllers/usercontroller');
-let item = require('./controllers/itemcontroller');
+let inventoryitem = require('./controllers/inventoryitemcontroller');
+let cart = require('./controllers/cartcontroller');
+let cartitem = require('./controllers/cartitemcontroller');
+let orderitem = require('./controllers/orderitemcontroller');
+let order = require('./controllers/ordercontroller');
 let sequelize = require('./db');
-
-// console.log('hello!')
 
 sequelize.sync();
 // sequelize.sync({force: true});
@@ -17,8 +19,15 @@ app.use('/user', user);
 
 app.use(require('./middleware/auth'));
 
-app.use('/item', item);
+app.use('/inventoryitem', inventoryitem);
 
+app.use('/cart', cart);
+
+app.use('/cartitem', cartitem);
+
+app.use('/orderitem', orderitem);
+
+app.use('/order', order);
 
 app.listen(8000, function(){
     console.log('App is listening on 8000.')

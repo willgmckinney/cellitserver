@@ -14,4 +14,24 @@ sequelize.authenticate().then(
     }
 );
 
+User = sequelize.import('./models/user');
+Cart = sequelize.import('./models/cart');
+Cartitems = sequelize.import('./models/cartitem');
+Order = sequelize.import('./models/order');
+Orderitems = sequelize.import('./models/orderitem')
+
+
+Cartitems.belongsTo(Cart);
+Cart.hasMany(Cartitems);
+
+User.hasOne(Cart);
+Cart.belongsTo(User);
+
+User.hasOne(Order);
+Order.belongsTo(User);
+
+Orderitems.belongsTo(Order);
+Order.hasMany(Orderitems);
+
+
 module.exports = sequelize;

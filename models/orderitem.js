@@ -1,5 +1,5 @@
 module.exports = function (sequelize, DataTypes) {
-    return sequelize.define('item', {
+    return sequelize.define('orderitem', {
         name: {
             type: DataTypes.STRING,
             allowNull: false
@@ -9,29 +9,20 @@ module.exports = function (sequelize, DataTypes) {
             allowNull: false
         },
         price: {
-            type: DataTypes.STRING,
+            type: DataTypes.INTEGER,
             allowNull: false
         },
         quantity: {
-            type: DataTypes.STRING,
+            type: DataTypes.INTEGER,
             allowNull: false
         },
         weight: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
-        catagory: {
-            type: DataTypes.STRING,
+            type: DataTypes.INTEGER,
             allowNull: false
         },
         onsale: {
             type: DataTypes.STRING,
             allowNull: false
-        },
-        sold: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
-        poster: DataTypes.INTEGER
+        }
     });
 };

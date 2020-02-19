@@ -1,19 +1,19 @@
 let router = require('express').Router();
 let sequelize = require('../db');
-let Item = sequelize.import('../models/item');
+let Orderitem = sequelize.import('../models/orderitem');
+let Order = sequelize.import('../models/order')
 
 router.post('/create', function (req, res) {
-    Item.create({
+    Order.findOne({where: {userId: req.user.id}}).then( data =>
+    Orderitem.create({
         name: req.body.name,
         description: req.body.description,
         price: req.body.price,
         quantity: req.body.quantity,
         weight: req.body.weight,
-        catagory: req.body.catagory,
         onsale: req.body.onsale,
-        sold: req.body.sold,
-        poster: req.user.id
-    }).then(
+        orderId: data.id
+    })).then(
         function createSuccess(postedinfo) {
             res.json({
                 postedinfo: postedinfo
@@ -25,9 +25,9 @@ router.post('/create', function (req, res) {
     );
 });
 
-router.get('/allitems', function (req, res) {
-    Item.findAll({
-        where: {poster: req.user.id}
+router.get('/allitems/:id', function (req, res) {
+    Orderitem.findAll({
+        where: {orderId: req.params.id}, include: 'order'
     }).then(
         function findAllSuccess(data) {
             res.json(data);
@@ -39,8 +39,8 @@ router.get('/allitems', function (req, res) {
 });
 
 router.delete('/delete/:id', function(req, res) {
-    Item.destroy({
-        where: {id: req.params.id, poster: req.user.id}
+    Orderitem.destroy({
+        where: {orderId: req.params.id}
     }).then(
         function deleteSuccessLog() {
             res.send('you removed a log');
@@ -52,16 +52,14 @@ router.delete('/delete/:id', function(req, res) {
 });
 
 router.put('/update/:id', function (req, res) {
-    Item.update({
+    Orderitem.update({
         name: req.body.name,
         description: req.body.description,
         price: req.body.price,
         quantity: req.body.quantity,
         weight: req.body.weight,
-        catagory: req.body.catagory,
-        onsale: req.body.onsale,
-        sold: req.body.sold
-    }, {where: {id: req.params.id}})
+        onsale: req.body.onsale
+    }, {where: {orderId: req.params.id}})
     .then(
         function updateValid(updatedpost){
         res.json({updatedpost: updatedpost})}
