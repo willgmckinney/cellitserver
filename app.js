@@ -17,9 +17,9 @@ app.use(require('./middleware/headers'));
 
 app.use('/user', user);
 
-app.use(require('./middleware/auth'));
-
 app.use('/inventoryitem', inventoryitem);
+
+app.use(require('./middleware/auth'));
 
 app.use('/cart', cart);
 
@@ -29,6 +29,6 @@ app.use('/orderitem', orderitem);
 
 app.use('/order', order);
 
-app.listen(8000, function(){
-    console.log('App is listening on 8000.')
+app.listen(8000, function() {
+  console.log('App is listening on 8000.');
 });
