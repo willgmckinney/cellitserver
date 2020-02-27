@@ -32,6 +32,10 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.INTEGER,
             allowNull: false
         },
+        image: {
+            type: DataTypes.STRING,
+            allowNull: true
+        },
         poster: DataTypes.INTEGER
     });
 };
