@@ -17,6 +17,8 @@ app.use(require('./middleware/headers'));
 
 app.use('/user', user);
 
+app.use('/uploads', express.static('uploads'));
+
 app.use('/inventoryitem', inventoryitem);
 
 app.use(require('./middleware/auth'));
