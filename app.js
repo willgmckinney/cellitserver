@@ -31,6 +31,6 @@ app.use('/orderitem', orderitem);
 
 app.use('/order', order);
 
-app.listen(8000, function(){
-    console.log('App is listening on 8000.')
+app.listen(8000, function() {
+  console.log('App is listening on 8000.');
 });
