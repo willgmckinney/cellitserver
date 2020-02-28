@@ -23,6 +23,18 @@ router.post('/create', function (req, res) {
     );
 });
 
+router.get('/orders', function (req, res) {
+    Order.findAll().then(
+        function findAllSuccess(data) {
+            res.json(data);
+        },
+        function findAllError(err) {
+            res.send(500, err.message);
+        }
+    );
+});
+
+
 router.get('/allorders', function (req, res) {
     Order.findAll({
         where: {userId: req.user.id}
@@ -38,7 +50,7 @@ router.get('/allorders', function (req, res) {
 
 router.delete('/delete/:id', function(req, res) {
     Order.destroy({
-        where: {id: req.params.id, userId: req.user.id}
+        where: {id: req.params.id}
     }).then(
         function deleteSuccessLog() {
             res.send('you removed a log');
