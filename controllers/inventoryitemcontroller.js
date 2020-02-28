@@ -33,7 +33,11 @@ const upload = multer({
 
 // will parse 1 file (specified by image)
 router.post('/create', upload.single('image'), function(req, res) {
-  console.log(req.file);
+  console.log()
+  console.log("REQ", req)
+  console.log("REQ.FILE", req.file);
+  console.log("TYPEOF FILE", typeof req.file.path)
+  console.log("REQ.FILE.PATH", req.file.path);
   Inventoryitem.create({
     name: req.body.name,
     description: req.body.description,
