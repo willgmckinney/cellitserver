@@ -82,9 +82,11 @@ router.get('/allitems', function(req, res) {
 });
 
 router.delete('/delete/:id', function(req, res) {
-  Inventoryitem.destroy({
-    where: { id: req.params.id, poster: req.user.id }
-  }).then(
+  Inventoryitem.destroy(
+    {
+    where: { id: req.params.id }
+  }
+  ).then(
     function deleteSuccessLog() {
       res.send('you removed a log');
     },
