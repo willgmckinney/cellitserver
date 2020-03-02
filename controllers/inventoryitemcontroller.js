@@ -32,8 +32,12 @@ const upload = multer({
 })
 
 // will parse 1 file (specified by image)
-router.post('/create', function(req, res) {
-  // console.log(req.file);
+router.post('/create', upload.single('image'), function(req, res) {
+  console.log()
+  console.log("REQ", req)
+  console.log("REQ.FILE", req.file);
+  console.log("TYPEOF FILE", typeof req.file.path)
+  console.log("REQ.FILE.PATH", req.file.path);
   Inventoryitem.create({
     name: req.body.name,
     description: req.body.description,
@@ -42,8 +46,8 @@ router.post('/create', function(req, res) {
     weight: req.body.weight,
     catagory: req.body.catagory,
     onsale: req.body.onsale,
-    sold: req.body.sold
-    // image: req.file.path
+    sold: req.body.sold,
+    image: req.file.path
   }).then(
     function createSuccess(postedinfo) {
       res.json({
