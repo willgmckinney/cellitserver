@@ -9,35 +9,35 @@ const storage = multer.diskStorage({
     cb(null, './uploads');
   },
   filename: function(req, file, cb) {
-    cb(null, file.originalname)
+    cb(null, file.originalname);
   }
 });
 
 const fileFilter = (req, file, cb) => {
   // limits uploads to only jpegs and png's
   if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
-  cb(null, true);
+    cb(null, true);
   } else {
-  cb(null, false);
+    cb(null, false);
   }
-}
+};
 
 const upload = multer({
-  storage: storage, 
+  storage: storage,
   limits: {
-  // limiting filesize for uploaded images
-  fileSize: 1024 * 1024 * 5
+    // limiting filesize for uploaded images
+    fileSize: 1024 * 1024 * 5
   },
   fileFilter: fileFilter
-})
+});
 
 // will parse 1 file (specified by image)
 router.post('/create', upload.single('image'), function(req, res) {
-  console.log()
-  console.log("REQ", req)
-  console.log("REQ.FILE", req.file);
-  console.log("TYPEOF FILE", typeof req.file.path)
-  console.log("REQ.FILE.PATH", req.file.path);
+  console.log();
+  console.log('REQ', req);
+  console.log('REQ.FILE', req.file);
+  // console.log("TYPEOF FILE", typeof req.file.path)
+  // console.log("REQ.FILE.PATH", req.file.path);
   Inventoryitem.create({
     name: req.body.name,
     description: req.body.description,
@@ -46,8 +46,8 @@ router.post('/create', upload.single('image'), function(req, res) {
     weight: req.body.weight,
     catagory: req.body.catagory,
     onsale: req.body.onsale,
-    sold: req.body.sold,
-    image: req.file.path
+    sold: req.body.sold
+    // image: req.file.path
   }).then(
     function createSuccess(postedinfo) {
       res.json({
@@ -86,13 +86,11 @@ router.get('/allitems', function(req, res) {
 });
 
 router.delete('/delete/:id', function(req, res) {
-  Inventoryitem.destroy(
-    {
+  Inventoryitem.destroy({
     where: { id: req.params.id }
-  }
-  ).then(
+  }).then(
     function deleteSuccessLog() {
-      res.send('you removed a log');
+      res.json({ response: 'you removed an item' });
     },
     function deleteLogError(err) {
       res.send(500, err.message);
