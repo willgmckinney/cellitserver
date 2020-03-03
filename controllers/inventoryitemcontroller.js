@@ -13,40 +13,41 @@ const storage = multer.diskStorage({
   }
 });
 
-const fileFilter = (req, file, cb) => {
-  // limits uploads to only jpegs and png's
-  if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
-  cb(null, true);
-  } else {
-  cb(null, false);
-  }
-}
+// const fileFilter = (req, file, cb) => {
+//   // limits uploads to only jpegs and png's
+//   if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+//   cb(null, true);
+//   } else {
+//   cb(null, false);
+//   }
+// }
 
 const upload = multer({
   storage: storage, 
   limits: {
   // limiting filesize for uploaded images
   fileSize: 1024 * 1024 * 5
-  },
-  fileFilter: fileFilter
+  }
 })
 
 // will parse 1 file (specified by image)
 router.post('/create', upload.single('image'), function(req, res) {
   console.log()
   console.log("REQ", req)
+  console.log("REQ.BODY", req.body)
+  let newPhoto = JSON.parse(req.body.Photo)
+  console.log("typeof", newPhoto instanceof Array)
+  console.log("newPhoto", newPhoto)
   console.log("REQ.FILE", req.file);
-  console.log("TYPEOF FILE", typeof req.file.path)
-  console.log("REQ.FILE.PATH", req.file.path);
   Inventoryitem.create({
-    name: req.body.name,
-    description: req.body.description,
-    price: req.body.price,
-    quantity: req.body.quantity,
-    weight: req.body.weight,
-    catagory: req.body.catagory,
-    onsale: req.body.onsale,
-    sold: req.body.sold,
+    name: newPhoto.Photo[0].name,
+    description: newPhoto.Photo[0].description,
+    price: newPhoto.Photo[0].price,
+    quantity: newPhoto.Photo[0].quantity,
+    weight: newPhoto.Photo[0].weight,
+    catagory: newPhoto.Photo[0].catagory,
+    onsale: newPhoto.Photo[0].onsale,
+    sold: newPhoto.Photo[0].sold,
     image: req.file.path
   }).then(
     function createSuccess(postedinfo) {
@@ -101,14 +102,14 @@ router.delete('/delete/:id', function(req, res) {
 router.put('/update/:id', function(req, res) {
   Inventoryitem.update(
     {
-      name: req.body.name,
-      description: req.body.description,
-      price: req.body.price,
-      quantity: req.body.quantity,
-      weight: req.body.weight,
-      catagory: req.body.catagory,
-      onsale: req.body.onsale,
-      sold: req.body.sold
+      name: name,
+      description: description,
+      price: price,
+      quantity: quantity,
+      weight: weight,
+      catagory: catagory,
+      onsale: onsale,
+      sold: sold
     },
     { where: { id: req.params.id } }
   )
