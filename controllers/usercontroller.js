@@ -4,6 +4,7 @@ let sequelize = require('../db');
 let User = sequelize.import('../models/user');
 let bcrypt = require('bcryptjs');
 let jwt = require('jsonwebtoken');
+let validate = require('../middleware/auth');
 
 router.post('/signup', function(req, res) {
   User.create({
@@ -57,7 +58,7 @@ router.post('/signin', function(req, res) {
   });
 });
 
-router.get('/', function(req, res) {
+router.get('/', validate, function(req, res) {
   User.findOne({ where: { id: req.user.id }, include: ['cart', 'order'] }).then(
     function findAllSuccess(data) {
       res.json(data);

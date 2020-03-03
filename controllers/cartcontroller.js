@@ -30,9 +30,9 @@ router.get('/', function (req, res) {
     );
 });
 
-router.delete('/delete/:id', function(req, res) {
+router.delete('/delete', function(req, res) {
     Cart.destroy({
-        where: {id: req.params.id, userId: req.user.id}
+        where: {userId: req.user.id}
     }).then(
         function deleteSuccessLog() {
             res.send('you removed a log');
