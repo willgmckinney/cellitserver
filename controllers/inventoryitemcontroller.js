@@ -9,31 +9,37 @@ const storage = multer.diskStorage({
     cb(null, './uploads');
   },
   filename: function(req, file, cb) {
-    cb(null, file.originalname)
+    cb(null, file.originalname);
   }
 });
 
-const fileFilter = (req, file, cb) => {
-  // limits uploads to only jpegs and png's
-  if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
-  cb(null, true);
-  } else {
-  cb(null, false);
-  }
-}
+// if we choose to filter file types
+// const fileFilter = (req, file, cb) => {
+//   // limits uploads to only jpegs and png's
+//   if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+//   cb(null, true);
+//   } else {
+//   cb(null, false);
+//   }
+// }
 
 const upload = multer({
-  storage: storage, 
+  storage: storage,
   limits: {
   // limiting filesize for uploaded images
   fileSize: 1024 * 1024 * 5
-  },
-  fileFilter: fileFilter
+  }
 })
 
 // will parse 1 file (specified by image)
-router.post('/create', function(req, res) {
-  // console.log(req.file);
+router.post('/create', upload.single('image'), function(req, res) {
+  console.log()
+  console.log("REQ", req)
+  console.log("REQ.BODY", req.body)
+  let newPhoto = JSON.parse(req.body.Photo)
+  console.log("typeof", newPhoto instanceof Array)
+  console.log("newPhoto", newPhoto)
+  console.log("REQ.FILE", req.file);
   Inventoryitem.create({
     name: req.body.name,
     description: req.body.description,
@@ -42,8 +48,8 @@ router.post('/create', function(req, res) {
     weight: req.body.weight,
     catagory: req.body.catagory,
     onsale: req.body.onsale,
-    sold: req.body.sold
-    // image: req.file.path
+    sold: req.body.sold,
+    image: req.file.path
   }).then(
     function createSuccess(postedinfo) {
       res.json({
@@ -83,10 +89,10 @@ router.get('/allitems', function(req, res) {
 
 router.delete('/delete/:id', function(req, res) {
   Inventoryitem.destroy({
-    where: { id: req.params.id, poster: req.user.id }
+    where: { id: req.params.id }
   }).then(
     function deleteSuccessLog() {
-      res.send('you removed a log');
+      res.json({ response: 'you removed an item' });
     },
     function deleteLogError(err) {
       res.send(500, err.message);
@@ -97,14 +103,14 @@ router.delete('/delete/:id', function(req, res) {
 router.put('/update/:id', function(req, res) {
   Inventoryitem.update(
     {
-      name: req.body.name,
-      description: req.body.description,
-      price: req.body.price,
-      quantity: req.body.quantity,
-      weight: req.body.weight,
-      catagory: req.body.catagory,
-      onsale: req.body.onsale,
-      sold: req.body.sold
+      name: name,
+      description: description,
+      price: price,
+      quantity: quantity,
+      weight: weight,
+      catagory: catagory,
+      onsale: onsale,
+      sold: sold
     },
     { where: { id: req.params.id } }
   )

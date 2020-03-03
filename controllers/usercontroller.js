@@ -58,6 +58,7 @@ router.post('/signin', function(req, res) {
   });
 });
 
+
 router.get('/', validate, function(req, res) {
   User.findOne({ where: { id: req.user.id }, include: ['cart', 'order'] }).then(
     function findAllSuccess(data) {
