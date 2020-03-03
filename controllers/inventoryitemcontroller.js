@@ -9,10 +9,11 @@ const storage = multer.diskStorage({
     cb(null, './uploads');
   },
   filename: function(req, file, cb) {
-    cb(null, file.originalname)
+    cb(null, file.originalname);
   }
 });
 
+// if we choose to filter file types
 // const fileFilter = (req, file, cb) => {
 //   // limits uploads to only jpegs and png's
 //   if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
@@ -23,7 +24,7 @@ const storage = multer.diskStorage({
 // }
 
 const upload = multer({
-  storage: storage, 
+  storage: storage,
   limits: {
   // limiting filesize for uploaded images
   fileSize: 1024 * 1024 * 5
@@ -40,14 +41,14 @@ router.post('/create', upload.single('image'), function(req, res) {
   console.log("newPhoto", newPhoto)
   console.log("REQ.FILE", req.file);
   Inventoryitem.create({
-    name: newPhoto.Photo[0].name,
-    description: newPhoto.Photo[0].description,
-    price: newPhoto.Photo[0].price,
-    quantity: newPhoto.Photo[0].quantity,
-    weight: newPhoto.Photo[0].weight,
-    catagory: newPhoto.Photo[0].catagory,
-    onsale: newPhoto.Photo[0].onsale,
-    sold: newPhoto.Photo[0].sold,
+    name: req.body.name,
+    description: req.body.description,
+    price: req.body.price,
+    quantity: req.body.quantity,
+    weight: req.body.weight,
+    catagory: req.body.catagory,
+    onsale: req.body.onsale,
+    sold: req.body.sold,
     image: req.file.path
   }).then(
     function createSuccess(postedinfo) {
@@ -88,10 +89,10 @@ router.get('/allitems', function(req, res) {
 
 router.delete('/delete/:id', function(req, res) {
   Inventoryitem.destroy({
-    where: { id: req.params.id, poster: req.user.id }
+    where: { id: req.params.id }
   }).then(
     function deleteSuccessLog() {
-      res.send('you removed a log');
+      res.json({ response: 'you removed an item' });
     },
     function deleteLogError(err) {
       res.send(500, err.message);
