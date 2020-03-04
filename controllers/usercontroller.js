@@ -58,6 +58,19 @@ router.post('/signin', function(req, res) {
   });
 });
 
+router.get('/:id', function(req, res) {
+  // console.log(req);
+  User.findAll({
+    where: { id: req.params.id }
+  }).then(
+    function findAllSuccess(data) {
+      res.json(data);
+    },
+    function findAllError(err) {
+      res.send(500, err.message);
+    }
+  );
+});
 
 router.get('/', validate, function(req, res) {
   User.findOne({ where: { id: req.user.id }, include: ['cart', 'order'] }).then(
