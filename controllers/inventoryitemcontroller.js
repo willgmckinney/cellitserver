@@ -13,25 +13,13 @@ const storage = multer.diskStorage({
   }
 });
 
-// if we choose to filter file types
-// const fileFilter = (req, file, cb) => {
-//   // limits uploads to only jpegs and png's
-//   if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
-//   cb(null, true);
-//   } else {
-//   cb(null, false);
-//   }
-// }
-
 const upload = multer({
   storage: storage,
   limits: {
-    // limiting filesize for uploaded images
     fileSize: 1024 * 1024 * 5
   }
 });
 
-// will parse 1 file (specified by image)
 router.post('/create', upload.single('image'), function(req, res) {
   console.log();
   console.log('REQ', req);

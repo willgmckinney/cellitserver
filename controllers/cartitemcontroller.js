@@ -53,12 +53,7 @@ router.delete('/delete/:id', function(req, res) {
 
 router.put('/update/:id', function (req, res) {
     Cartitem.update({
-        name: req.body.name,
-        description: req.body.description,
-        price: req.body.price,
-        quantity: req.body.quantity,
-        weight: req.body.weight,
-        onsale: req.body.onsale
+        quantity: req.body.quantity
     }, {where: {id: req.params.id}})
     .then(
         function updateValid(updatedpost){
