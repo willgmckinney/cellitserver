@@ -13,43 +13,31 @@ const storage = multer.diskStorage({
   }
 });
 
-// if we choose to filter file types
-// const fileFilter = (req, file, cb) => {
-//   // limits uploads to only jpegs and png's
-//   if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
-//   cb(null, true);
-//   } else {
-//   cb(null, false);
-//   }
-// }
-
 const upload = multer({
   storage: storage,
   limits: {
-  // limiting filesize for uploaded images
-  fileSize: 1024 * 1024 * 5
+    fileSize: 1024 * 1024 * 5
   }
-})
+});
 
-// will parse 1 file (specified by image)
 router.post('/create', upload.single('image'), function(req, res) {
-  console.log()
-  console.log("REQ", req)
-  console.log("REQ.BODY", req.body)
-  let newPhoto = JSON.parse(req.body.Photo)
-  console.log("typeof", newPhoto instanceof Array)
-  console.log("newPhoto", newPhoto)
-  console.log("REQ.FILE", req.file);
+  console.log();
+  console.log('REQ', req);
+  console.log('REQ.BODY', req.body);
+  let newPhoto = JSON.parse(req.body.Photo);
+  console.log('typeof', newPhoto instanceof Array);
+  console.log('newPhoto', newPhoto);
+  console.log('REQ.FILE', req.file);
   Inventoryitem.create({
-      name: newPhoto.Photo[0].name,
-      description: newPhoto.Photo[0].description,
-      price: newPhoto.Photo[0].price,
-      quantity: newPhoto.Photo[0].quantity,
-      weight: newPhoto.Photo[0].weight,
-      catagory: newPhoto.Photo[0].catagory,
-      onsale: newPhoto.Photo[0].onsale,
-      sold: newPhoto.Photo[0].sold,
-      image: req.file.path
+    name: newPhoto.Photo[0].name,
+    description: newPhoto.Photo[0].description,
+    price: newPhoto.Photo[0].price,
+    quantity: newPhoto.Photo[0].quantity,
+    weight: newPhoto.Photo[0].weight,
+    catagory: newPhoto.Photo[0].catagory,
+    onsale: newPhoto.Photo[0].onsale,
+    sold: newPhoto.Photo[0].sold,
+    image: req.file.path
   }).then(
     function createSuccess(postedinfo) {
       res.json({
