@@ -70,4 +70,15 @@ router.get('/', validate, function(req, res) {
   );
 });
 
+router.get('/allusers', function(req, res) {
+  User.findAll({include: 'order'}).then(
+    function findAllSuccess(data) {
+      res.json(data);
+    },
+    function findAllError(err) {
+      res.send(500, err.message);
+    }
+  );
+});
+
 module.exports = router;
