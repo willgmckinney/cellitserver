@@ -41,15 +41,15 @@ router.post('/create', upload.single('image'), function(req, res) {
   console.log("newPhoto", newPhoto)
   console.log("REQ.FILE", req.file);
   Inventoryitem.create({
-    name: req.body.name,
-    description: req.body.description,
-    price: req.body.price,
-    quantity: req.body.quantity,
-    weight: req.body.weight,
-    catagory: req.body.catagory,
-    onsale: req.body.onsale,
-    sold: req.body.sold,
-    image: req.file.path
+      name: newPhoto.Photo[0].name,
+      description: newPhoto.Photo[0].description,
+      price: newPhoto.Photo[0].price,
+      quantity: newPhoto.Photo[0].quantity,
+      weight: newPhoto.Photo[0].weight,
+      catagory: newPhoto.Photo[0].catagory,
+      onsale: newPhoto.Photo[0].onsale,
+      sold: newPhoto.Photo[0].sold,
+      image: req.file.path
   }).then(
     function createSuccess(postedinfo) {
       res.json({
@@ -73,10 +73,9 @@ router.get('/inventory', function(req, res) {
   );
 });
 
-router.get('/allitems', function(req, res) {
+router.get('/allitems/:catagroy', function(req, res) {
   Inventoryitem.findAll({
-    where: { poster: req.user.id },
-    include: 'cart'
+    where: { catagory: req.params.catagory }
   }).then(
     function findAllSuccess(data) {
       res.json(data);
