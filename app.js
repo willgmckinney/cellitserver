@@ -1,3 +1,4 @@
+require('dotenv').config();
 let express = require('express');
 let app = express();
 let user = require('./controllers/usercontroller');
@@ -31,6 +32,6 @@ app.use('/orderitem', orderitem);
 
 app.use('/order', order);
 
-app.listen(8000, function() {
-  console.log('App is listening on 8000.');
+app.listen(process.env.PORT, function() {
+  console.log(`App is listening on ${process.env.PORT}.`);
 });
